@@ -1,0 +1,53 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Build artifacts
+/build
+/dist
+/dist-ssr
+.next/
+/out/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+*.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE / Editor specific
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# Keep .vscode/extensions.json by negating the broader .vscode/*
+.vscode/*
+!.vscode/extensions.json
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Coverage directory
+/coverage
+
+# Optional: Storybook
+.storybook-static/
+storybook-static/
