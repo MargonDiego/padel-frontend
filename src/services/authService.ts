@@ -97,18 +97,47 @@ export const authService = {
         ...credentials,
         identity: 'postman',
       };
+      
+      console.log('Enviando solicitud de login a API:', JSON.stringify(loginData, null, 2));
 
       const response = await apiClient.post<ApiResponse<LoginResponse>>('/auth', loginData);
+      console.log('Respuesta del servidor de login:', response.data);
+      
+      // Si la respuesta es exitosa, guardamos la información del usuario
       if (response.data.success) {
         localStorage.setItem('token', response.data.data.user_token.token);
         localStorage.setItem('user', JSON.stringify(response.data.data.user));
+      } else {
+        // Si no es exitosa (por ejemplo, si el servidor responde con success=false)
+        console.warn('El servidor respondió con un error:', response.data);
       }
+      
       return response.data;
     } catch (error: any) {
+      // Registrar detalles completos del error
       console.error('Error en login:', error);
+      
+      // Extraer más detalles del error si están disponibles
+      let errorMessage = 'Error al iniciar sesión';
+      
+      if (error.response) {
+        // El servidor respondió con un código de error
+        console.error('Detalles del error HTTP:', {
+          status: error.response.status,
+          data: error.response.data
+        });
+        
+        // Obtener mensaje de error más específico si está disponible
+        errorMessage = error.response.data?.error || error.response.data?.message || errorMessage;
+      } else if (error.request) {
+        // La solicitud se hizo pero no se recibió respuesta
+        console.error('No se recibió respuesta del servidor');
+        errorMessage = 'No se pudo conectar con el servidor';
+      }
+      
       return {
         success: false,
-        error: error.message || 'Error al iniciar sesión',
+        error: errorMessage,
       };
     }
   },

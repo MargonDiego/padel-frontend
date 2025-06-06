@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Container, CssBaseline } from '@mui/material';
-import Navbar from './Navbar';
+import SimpleNavbar from './SimpleNavbar';
 import Footer from './Footer';
 
 interface LayoutProps {
@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       }}
     >
       <CssBaseline />
-      <Navbar />
+      <SimpleNavbar />
       <Container component="main" sx={{ flexGrow: 1, py: 4 }}>
         {children}
       </Container>

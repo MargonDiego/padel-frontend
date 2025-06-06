@@ -64,11 +64,18 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
 
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
+      console.log('Enviando solicitud de login con:', { username });
       const response = await authService.login({ username, password });
+      console.log('Respuesta del servidor:', response);
+      
+      // Si la respuesta fue exitosa y contiene datos
       if (response.success && response.data) {
         setUser(response.data.user);
         return true;
       }
+      
+      // Si la respuesta no fue exitosa pero llegó del servidor
+      console.warn('Login fallido:', response.error || 'Credenciales inválidas');
       return false;
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
