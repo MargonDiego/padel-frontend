@@ -17,7 +17,6 @@ import {
   Stepper,
   Step,
   StepLabel,
-  Paper,
   StepConnector,
   stepConnectorClasses,
   StepButton,

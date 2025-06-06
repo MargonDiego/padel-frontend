@@ -207,12 +207,12 @@ const MatchResultForm: React.FC<MatchResultFormProps> = ({
         <Box sx={{ pt: 2 }}>
           {/* Información de equipos */}
           <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <Typography variant="subtitle1" fontWeight="bold">
                 {match?.team1?.name || 'Equipo 1'}
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={6}>
               <Typography variant="subtitle1" fontWeight="bold">
                 {match?.team2?.name || 'Equipo 2'}
               </Typography>
@@ -259,7 +259,7 @@ const MatchResultForm: React.FC<MatchResultFormProps> = ({
             {sets.map((set, index) => (
               <ListItem key={index} disablePadding sx={{ mb: 1 }}>
                 <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={5}>
+                  <Grid size={5}>
                     <TextField
                       label={`Set ${index + 1}: ${match?.team1?.name || 'Equipo 1'}`}
                       fullWidth
@@ -269,7 +269,7 @@ const MatchResultForm: React.FC<MatchResultFormProps> = ({
                       inputProps={{ inputMode: 'numeric' }}
                     />
                   </Grid>
-                  <Grid item xs={5}>
+                  <Grid size={5}>
                     <TextField
                       label={`Set ${index + 1}: ${match?.team2?.name || 'Equipo 2'}`}
                       fullWidth
@@ -279,7 +279,7 @@ const MatchResultForm: React.FC<MatchResultFormProps> = ({
                       inputProps={{ inputMode: 'numeric' }}
                     />
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid size={2}>
                     <IconButton 
                       onClick={() => handleRemoveSet(index)}
                       disabled={sets.length <= 1}

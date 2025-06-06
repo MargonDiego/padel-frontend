@@ -7,7 +7,6 @@ import {
   Button,
   Typography,
   Box,
-  Grid,
   Paper,
   Chip,
   Avatar,
@@ -18,12 +17,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  CircularProgress
+  CircularProgress,
+  Grid
 } from '@mui/material';
 import SportsTennisIcon from '@mui/icons-material/SportsTennis';
 import FlagIcon from '@mui/icons-material/Flag';
 import EventIcon from '@mui/icons-material/Event';
-import PlaceIcon from '@mui/icons-material/Place';
+
 import { Link } from 'react-router-dom';
 import type { Match } from '../../types/models';
 
@@ -41,7 +41,7 @@ const MatchDetailDialog: React.FC<MatchDetailDialogProps> = ({
   loading 
 }) => {
   // Función para formatear la fecha
-  const formatDate = (dateString: string | null) => {
+  const formatDate = (dateString: string | null | undefined) => {
     if (!dateString) return 'No definido';
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', {
@@ -76,10 +76,10 @@ const MatchDetailDialog: React.FC<MatchDetailDialogProps> = ({
 
   // Duración del partido
   const getMatchDuration = () => {
-    if (!match?.startedAt || !match?.endedAt) return 'No disponible';
+    if (!match?.scheduledAt || !match?.completedAt) return 'No disponible';
     
-    const start = new Date(match.startedAt);
-    const end = new Date(match.endedAt);
+    const start = new Date(match.scheduledAt);
+    const end = new Date(match.completedAt);
     const diffMs = end.getTime() - start.getTime();
     const diffMins = Math.floor(diffMs / 60000);
     const hours = Math.floor(diffMins / 60);
@@ -115,12 +115,12 @@ const MatchDetailDialog: React.FC<MatchDetailDialogProps> = ({
             <Box sx={{ mb: 3 }}>
               <Typography variant="h6" gutterBottom>Información general</Typography>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid size={6}>
                   <Typography variant="subtitle2">Estado:</Typography>
                   <Box>{getMatchStatusChip(match)}</Box>
                 </Grid>
                 {match.tournament && (
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={6}>
                     <Typography variant="subtitle2">Torneo:</Typography>
                     <Link to={`/tournaments/${match.tournament.id}`} style={{ textDecoration: 'none' }}>
                       <Typography color="primary">{match.tournament.name}</Typography>
@@ -128,7 +128,7 @@ const MatchDetailDialog: React.FC<MatchDetailDialogProps> = ({
                   </Grid>
                 )}
                 {match.round && (
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={6}>
                     <Typography variant="subtitle2">Ronda:</Typography>
                     <Typography>
                       {match.round === 1 ? 'Final' : 
@@ -138,30 +138,24 @@ const MatchDetailDialog: React.FC<MatchDetailDialogProps> = ({
                     </Typography>
                   </Grid>
                 )}
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="subtitle2">Programado para:</Typography>
-                  <Typography>
-                    {formatDate(match.scheduledAt)}
-                  </Typography>
-                </Grid>
-                {match.startedAt && (
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="subtitle2">Comenzó a las:</Typography>
+                {match.scheduledAt && (
+                  <Grid size={6}>
+                    <Typography variant="subtitle2">Programado para:</Typography>
                     <Typography>
-                      {formatDate(match.startedAt)}
+                      {formatDate(match.scheduledAt)}
                     </Typography>
                   </Grid>
                 )}
-                {match.endedAt && (
-                  <Grid item xs={12} sm={6}>
+                {match.completedAt && (
+                  <Grid size={6}>
                     <Typography variant="subtitle2">Finalizó a las:</Typography>
                     <Typography>
-                      {formatDate(match.endedAt)}
+                      {formatDate(match.completedAt)}
                     </Typography>
                   </Grid>
                 )}
-                {match.startedAt && match.endedAt && (
-                  <Grid item xs={12} sm={6}>
+                {match.scheduledAt && match.completedAt && (
+                  <Grid size={6}>
                     <Typography variant="subtitle2">Duración:</Typography>
                     <Typography>
                       {getMatchDuration()}
@@ -169,7 +163,7 @@ const MatchDetailDialog: React.FC<MatchDetailDialogProps> = ({
                   </Grid>
                 )}
                 {match.status === 'completed' && (
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Typography variant="subtitle2">Resultado final:</Typography>
                     <Typography variant="h6" color={match.winnerId === match.team1Id ? 'primary' : 'secondary'}>
                       {match.team1Score} - {match.team2Score}
@@ -184,7 +178,7 @@ const MatchDetailDialog: React.FC<MatchDetailDialogProps> = ({
             <Box sx={{ mb: 3 }}>
               <Typography variant="h6" gutterBottom>Equipos</Typography>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Paper variant="outlined" sx={{ p: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                       <Typography variant="subtitle1" fontWeight="bold">
@@ -231,7 +225,7 @@ const MatchDetailDialog: React.FC<MatchDetailDialogProps> = ({
                   </Paper>
                 </Grid>
                 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Paper variant="outlined" sx={{ p: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                       <Typography variant="subtitle1" fontWeight="bold">

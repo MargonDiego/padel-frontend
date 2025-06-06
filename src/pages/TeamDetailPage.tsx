@@ -229,7 +229,7 @@ const TeamDetailPage = () => {
 
         <Grid container spacing={4}>
           {/* Columna izquierda: Información del equipo y jugadores */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Card sx={{ mb: 3 }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -288,94 +288,94 @@ const TeamDetailPage = () => {
                 <Divider sx={{ mb: 2 }} />
                 {teamStats ? (
                   <Grid container spacing={1}>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" color="text.secondary">
                         Partidos jugados:
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" fontWeight="bold">
                         {teamStats.matchesPlayed}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" color="text.secondary">
                         Victorias:
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" fontWeight="bold">
                         {teamStats.matchesWon}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" color="text.secondary">
                         Derrotas:
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" fontWeight="bold">
                         {teamStats.matchesLost}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" color="text.secondary">
                         % de victorias:
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" fontWeight="bold">
                         {(teamStats.winRatio * 100).toFixed(1)}%
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" color="text.secondary">
                         Sets ganados:
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" fontWeight="bold">
                         {teamStats.setsWon}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" color="text.secondary">
                         Torneos jugados:
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" fontWeight="bold">
                         {teamStats.tournamentsPlayed}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" color="text.secondary">
                         Torneos ganados:
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" fontWeight="bold">
                         {teamStats.tournamentsWon}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" color="text.secondary">
                         Puntos ranking:
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography variant="body2" fontWeight="bold">
                         {teamStats.rankingPoints}
                       </Typography>
                     </Grid>
                     {teamStats.bestTournamentResult && (
                       <>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                           <Typography variant="body2" color="text.secondary">
                             Mejor resultado:
                           </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                           <Typography variant="body2" fontWeight="bold">
                             {teamStats.bestTournamentResult === 'winner' ? 
                               'Campeón' : 
@@ -398,7 +398,7 @@ const TeamDetailPage = () => {
           </Grid>
 
           {/* Columna derecha: Torneos y partidos recientes */}
-          <Grid item xs={12} md={8}>
+          <Grid size={{ xs: 12, md: 8 }}>
             {/* Torneos en los que participa */}
             <Card sx={{ mb: 3 }}>
               <CardContent>
@@ -409,18 +409,18 @@ const TeamDetailPage = () => {
                 {team.tournaments && team.tournaments.length > 0 ? (
                   <Grid container spacing={2}>
                     {team.tournaments.map((tournament) => (
-                      <Grid item xs={12} sm={6} key={tournament.id}>
+                      <Grid size={{ xs: 12, sm: 6 }} key={tournament.id}>
                         <Paper
                           sx={{
                             p: 2,
-                            borderLeft: tournament.status === 'completed' && tournament.winnerId === team.id ? 
+                            borderLeft: tournament.status === 'completed' ? 
                               '4px solid #FFD700' : '1px solid rgba(0, 0, 0, 0.12)',
                             display: 'flex',
                             flexDirection: 'column',
                             height: '100%',
                           }}
                         >
-                          {tournament.status === 'completed' && tournament.winnerId === team.id && (
+                          {tournament.status === 'completed' && (
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                               <TrophyIcon sx={{ color: '#FFD700', mr: 0.5 }} />
                               <Typography variant="body2" fontWeight="bold" color="secondary">
@@ -516,7 +516,7 @@ const TeamDetailPage = () => {
                             </TableCell>
                             <TableCell>
                               <Chip
-                                label={match.status === 'scheduled' ? 'Programado' : 
+                                label={match.status === 'pending' ? 'Programado' : 
                                       match.status === 'in_progress' ? 'En progreso' : 'Completado'}
                                 size="small"
                                 color={match.status === 'completed' ? 'success' : 

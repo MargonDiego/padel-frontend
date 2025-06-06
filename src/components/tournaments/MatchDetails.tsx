@@ -164,8 +164,10 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle sx={{ display: 'flex', alignItems: 'center' }}>
-        <SportsTennisIcon sx={{ mr: 1 }} />
-        Detalles del Partido
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <SportsTennisIcon sx={{ mr: 1 }} />
+          <Typography>Detalles del Partido</Typography>
+        </Box>
       </DialogTitle>
       <DialogContent>
         {loading ? (
@@ -312,7 +314,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({
                 <Grid container spacing={3}>
                   {/* Resultados detallados (sets) */}
                   {match.status === 'completed' && (
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                       <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                         <SportsTennisIcon sx={{ mr: 1, fontSize: 20 }} />
                         Detalle del Resultado
@@ -323,7 +325,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({
 
                   {/* Información del ganador */}
                   {match.winner && (
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                       <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                         <EmojiEventsIcon sx={{ mr: 1, fontSize: 20 }} />
                         Equipo Ganador
@@ -347,46 +349,55 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({
                   )}
 
                   {/* Próximo partido */}
-                  {match.nextMatch && (
-                    <Grid item xs={12} md={match.winner ? 6 : 12}>
+                  {match.nextMatchId && match.tournament?.matches && (
+                    <Grid size={{ xs: 12, md: match.winner ? 6 : 12 }}>
                       <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                         <ArrowForwardIcon sx={{ mr: 1, fontSize: 20 }} />
                         Próximo Partido
                       </Typography>
                       <Paper variant="outlined" sx={{ p: 2 }}>
                         <Box>
-                          <Typography variant="body2" gutterBottom>
-                            <strong>Ronda:</strong> {getRoundName(match.nextMatch.round)}
-                          </Typography>
-                          <Typography variant="body2" gutterBottom>
-                            <strong>Fecha programada:</strong> {formatDate(match.nextMatch.scheduledAt)}
-                          </Typography>
-                          <Typography variant="body2" gutterBottom>
-                            <strong>Estado:</strong> {getStatusLabel(match.nextMatch.status)}
-                          </Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                            <Typography variant="body2" color="primary.main" fontWeight="medium" sx={{ mr: 1 }}>
-                              {match.nextMatch.team1?.name || match.winner?.name || 'Ganador de este partido'}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary" sx={{ mx: 1 }}>vs</Typography>
-                            <Typography variant="body2" color="secondary.main" fontWeight="medium" sx={{ ml: 1 }}>
-                              {match.nextMatch.team2?.name || 'Por determinar'}
-                            </Typography>
-                          </Box>
+                          {(() => {
+                            const nextMatch = match.tournament?.matches?.find(m => m.id === match.nextMatchId);
+                            if (!nextMatch) return <Typography variant="body2">Información no disponible</Typography>;
+                            
+                            return (
+                              <>
+                                <Typography variant="body2" gutterBottom>
+                                  <strong>Ronda:</strong> {getRoundName(nextMatch.round)}
+                                </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                  <strong>Fecha programada:</strong> {formatDate(nextMatch.scheduledAt)}
+                                </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                  <strong>Estado:</strong> {getStatusLabel(nextMatch.status)}
+                                </Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                                  <Typography variant="body2" color="primary.main" fontWeight="medium" sx={{ mr: 1 }}>
+                                    {nextMatch.team1?.name || match.winner?.name || 'Ganador de este partido'}
+                                  </Typography>
+                                  <Typography variant="body2" color="text.secondary" sx={{ mx: 1 }}>vs</Typography>
+                                  <Typography variant="body2" color="secondary.main" fontWeight="medium" sx={{ ml: 1 }}>
+                                    {nextMatch.team2?.name || 'Por determinar'}
+                                  </Typography>
+                                </Box>
+                              </>
+                            );
+                          })()}
                         </Box>
                       </Paper>
                     </Grid>
                   )}
 
                   {/* Fechas detalladas */}
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                       <CalendarTodayIcon sx={{ mr: 1, fontSize: 20 }} />
                       Información Temporal
                     </Typography>
                     <Paper variant="outlined" sx={{ p: 2 }}>
                       <Grid container spacing={2}>
-                        <Grid item xs={12} sm={4}>
+                        <Grid size={{ xs: 12, sm: 4 }}>
                           <Typography variant="body2" color="text.secondary">
                             Programado para:
                           </Typography>
@@ -394,23 +405,23 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({
                             {formatDate(match.scheduledAt)}
                           </Typography>
                         </Grid>
-                        {match.startedAt && (
-                          <Grid item xs={12} sm={4}>
+                        {match.scheduledAt && (
+                          <Grid size={{ xs: 12, sm: 4 }}>
                             <Typography variant="body2" color="text.secondary">
                               Comenzó:
                             </Typography>
                             <Typography variant="body2" fontWeight="medium">
-                              {formatDate(match.startedAt)}
+                              {formatDate(match.scheduledAt)}
                             </Typography>
                           </Grid>
                         )}
-                        {match.endedAt && (
-                          <Grid item xs={12} sm={4}>
+                        {match.completedAt && (
+                          <Grid size={{ xs: 12, sm: 4 }}>
                             <Typography variant="body2" color="text.secondary">
                               Finalizó:
                             </Typography>
                             <Typography variant="body2" fontWeight="medium">
-                              {formatDate(match.endedAt)}
+                              {formatDate(match.completedAt)}
                             </Typography>
                           </Grid>
                         )}

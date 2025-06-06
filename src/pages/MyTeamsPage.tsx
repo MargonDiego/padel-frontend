@@ -90,7 +90,7 @@ const MyTeamsPage: React.FC = () => {
           <>
             <Grid container spacing={3}>
               {teams.map((team) => (
-                <Grid item xs={12} sm={6} md={4} key={team.id}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={team.id}>
                   <Card 
                     variant="outlined"
                     sx={{ 

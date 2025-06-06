@@ -165,6 +165,7 @@ const AllMatchesPage: React.FC = () => {
             match={selectedMatch}
             open={dialogOpen}
             onClose={handleCloseDialog}
+            loading={false}
           />
         )}
       </Container>

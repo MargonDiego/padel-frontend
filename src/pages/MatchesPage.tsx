@@ -95,7 +95,7 @@ const MatchesPage: React.FC = () => {
           if (tabIndex === 0) {
             // Próximos partidos: Partidos programados pendientes
             filteredMatches = allMatches.filter(match => 
-              match.status === 'pending' || !match.startedAt
+              match.status === 'pending' || !match.completedAt
             );
           } else if (tabIndex === 1) {
             // Partidos en progreso
@@ -207,7 +207,7 @@ const MatchesPage: React.FC = () => {
     const statusProps = getStatusChipProps(match.status);
     
     return (
-      <Grid item xs={12} md={6} key={match.id}>
+      <Grid size={{ xs: 12, md: 6 }} key={match.id}>
         <Card 
           variant="outlined" 
           sx={{ 
@@ -235,14 +235,14 @@ const MatchesPage: React.FC = () => {
             
             {/* Fecha y hora */}
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              {formatMatchDateTime(match.scheduledTime)}
+              {formatMatchDateTime(match.scheduledAt)}
             </Typography>
             
             {/* Equipos y resultado */}
             <Box sx={{ mb: 2 }}>
               <Grid container spacing={1}>
                 {/* Equipo 1 */}
-                <Grid item xs={5}>
+                <Grid size={5}>
                   <Box 
                     sx={{ 
                       textAlign: 'center', 
@@ -263,7 +263,7 @@ const MatchesPage: React.FC = () => {
                 </Grid>
                 
                 {/* Resultado o VS */}
-                <Grid item xs={2}>
+                <Grid size={2}>
                   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     {match.status === 'completed' ? (
                       <Typography variant="h6" fontWeight="bold" color="text.primary">
@@ -278,7 +278,7 @@ const MatchesPage: React.FC = () => {
                 </Grid>
                 
                 {/* Equipo 2 */}
-                <Grid item xs={5}>
+                <Grid size={5}>
                   <Box 
                     sx={{ 
                       textAlign: 'center', 
@@ -308,14 +308,16 @@ const MatchesPage: React.FC = () => {
                   Resultados por set:
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                  {match.setResults.map((set, index) => (
+                  {Array.isArray(match.setResults) ? match.setResults.map((set, index) => (
                     <Chip 
                       key={index}
                       label={`${set.team1} - ${set.team2}`}
                       variant="outlined"
                       size="small"
                     />
-                  ))}
+                  )) : (
+                    <Typography variant="body2">{match.setResults || 'No hay resultados disponibles'}</Typography>
+                  )}
                 </Box>
               </Box>
             )}

@@ -130,7 +130,8 @@ const TournamentsPage = () => {
           ...values,
           startDate: values.startDate?.toISOString().split('T')[0] || '',
           endDate: values.endDate?.toISOString().split('T')[0] || '',
-          maxTeams: values.maxTeams ? Number(values.maxTeams) : undefined
+          maxTeams: values.maxTeams ? Number(values.maxTeams) : undefined,
+          format: values.format as 'elimination' | 'round_robin'
         };
 
         const response = await tournamentService.createTournament(tournamentData);
@@ -234,7 +235,7 @@ const TournamentsPage = () => {
           <>
             <Grid container spacing={3}>
               {filteredTournaments.map((tournament) => (
-                <Grid item xs={12} sm={6} md={4} key={tournament.id}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={tournament.id}>
                   <Card 
                     sx={{ 
                       height: '100%', 
@@ -352,7 +353,7 @@ const TournamentsPage = () => {
               <DialogTitle>Crear Nuevo Torneo</DialogTitle>
               <DialogContent>
                 <Grid container spacing={2} sx={{ mt: 0.5 }}>
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <TextField
                       fullWidth
                       id="name"
@@ -364,7 +365,7 @@ const TournamentsPage = () => {
                       helperText={formik.touched.name && formik.errors.name}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <FormControl fullWidth error={formik.touched.format && Boolean(formik.errors.format)}>
                       <InputLabel id="format-label">Formato</InputLabel>
                       <Select
@@ -383,7 +384,7 @@ const TournamentsPage = () => {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <DatePicker
                       label="Fecha de inicio"
                       value={formik.values.startDate}
@@ -399,7 +400,7 @@ const TournamentsPage = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <DatePicker
                       label="Fecha de fin"
                       value={formik.values.endDate}
@@ -415,7 +416,7 @@ const TournamentsPage = () => {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <TextField
                       fullWidth
                       id="maxTeams"
@@ -428,7 +429,7 @@ const TournamentsPage = () => {
                       helperText={formik.touched.maxTeams && formik.errors.maxTeams}
                     />
                   </Grid>
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <TextField
                       fullWidth
                       id="location"
@@ -438,7 +439,7 @@ const TournamentsPage = () => {
                       onChange={formik.handleChange}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <TextField
                       fullWidth
                       id="description"
